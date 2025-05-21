@@ -1,20 +1,11 @@
-/* // Теория по массивами
-
-// const array = [1,2,345,67,89]
-// // const array = ["a","b","c"]
-// // console.log(array.length);
-
-// console.log(array[2])
-// console.log(array[array.length-1])
-
-// array[3] = "первый измененный элемент"
-// console.log(array)
-*/
-
 const inputElement  = document.getElementById("title")
 const createBtn  = document.getElementById("create")
 const listElement  = document.getElementById("list")
 
+function toLocal() {
+    let todos = listElement.innerHTML
+    localStorage.setItem("todos",todos)
+}
 // console.log(inputElement.value)
 
 // const notes = ["Запись один первоначальная","вторая запись", "третья запись"]
@@ -23,6 +14,7 @@ const notes = [
     {
         title:"Запись один первоначальная",
         completed:false,
+        
     },
     {
         title:"Запись вторая",
@@ -32,6 +24,7 @@ const notes = [
 
 function render() {
     listElement.innerHTML = ""
+    
     if (notes.length === 0) {
         listElement.innerHTML = "<p>Нет элементов</p>"
     }
@@ -39,6 +32,8 @@ function render() {
         listElement.insertAdjacentHTML("beforeend",getNoteTempate(notes[i], i))
 
     }   
+
+    
 }
 
 render()
@@ -56,19 +51,22 @@ createBtn.onclick = function() {
     notes.push(newNote)
     render()
     inputElement.value = ""
+    toLocal()
 }
 
 
 listElement.onclick = function (event) {
-    // console.log(event.target.dataset.type)
     if (event.target.dataset.index) {
         const index = Number(event.target.dataset.index)
         const type = event.target.dataset.type
 
         if (type === "toggle") {
-            notes[index].completed = !notes[index].completed  
+            notes[index].completed = !notes[index].completed 
+            
+            toLocal()
         } else if (type === "remove") {
             notes.splice(index,1)
+            toLocal()
         }
         render()
     }
@@ -85,21 +83,10 @@ function getNoteTempate(notes, index) {
           </span>
         </li>
         `
+        
 }
 
-
-
-/* Теория по Объектам
-
-// const persoon = {
-//     firstname: "Daniil",
-//     lastname: "Tishkin",
-//     year: "2001",
-//     hasGirlfriend:yes,
-//     language: [ru,en],
-//     getFullName: function() {
-//         console.log()
-//     }
-// }
-*/
+if (localStorage.getItem("todos")) {
+    listElement.innerHTML = localStorage.getItem("todos")
+}
 
